@@ -1,0 +1,22 @@
+{
+  "name": "notia-business-server",
+  "displayName": "Notia Business Server",
+  "version": "0.1.0",
+  "description": "Ptejte se na tržby, pohledávky a závazky, objednávky, sklady, účetní výkazy, majetek, smlouvy a helpdesk z vašeho Notia Business Serveru (NBS) přímo v konverzaci s Claude. Data se čtou jen pro čtení a vždy s vašimi oprávněními v NBS.",
+  "author": {
+    "name": "Notia",
+    "url": "https://notia.cz"
+  },
+  "homepage": "https://notia.cz",
+  "license": "MIT",
+  "keywords": [
+    "nbs",
+    "notia",
+    "erp",
+    "sales",
+    "prodeje",
+    "faktury",
+    "sklad",
+    "ucetnictvi"
+  ]
+}

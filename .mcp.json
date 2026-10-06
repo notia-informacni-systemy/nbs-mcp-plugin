@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "notia-business-server": {
+      "type": "http",
+      "url": "https://mcp.notia.cz/mcp"
+    }
+  }
+}

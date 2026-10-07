@@ -1,0 +1,15 @@
+name: Validace pluginu
+
+# Kontroly samotné jsou v scripts/validate.mjs: manifest, skills a jejich společné sekce
+# proti shared/, rozcestník, README a CHANGELOG. Skript nemá závislosti, stačí Node
+# předinstalovaný v obrazu runneru.
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/validate.mjs

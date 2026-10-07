@@ -1,9 +1,9 @@
 ---
-name: fixed-assets
-description: Dlouhodobý majetek z Notia Business Serveru (NBS). Použij, když se uživatel ptá na evidenci majetku, pořizovací a zůstatkovou cenu, účetní nebo daňové odpisy, kolik zbývá odepsat, technické zhodnocení, umístění majetku nebo jeho vyřazení, a je připojený konektor Notia Business Server.
+name: nbs-overview
+description: Přehled, s čím pomůže konektor Notia Business Server (NBS). Použij, když se uživatel ptá, co všechno umíš z NBS, jaká data z NBS dokážeš zjistit nebo s čím mu pomůžeš, případně když dotaz na NBS nespadá do žádné konkrétní oblasti, a je připojený konektor Notia Business Server.
 ---
 
-# Dlouhodobý majetek v NBS
+# Co umí konektor NBS
 
 ## Společná pravidla
 
@@ -14,40 +14,26 @@ description: Dlouhodobý majetek z Notia Business Serveru (NBS). Použij, když 
 - Data chodí jako čas v UTC: `2026-03-31T22:00:00.000Z` je 1. 4. 2026 v Česku. Před porovnáním s obdobím je převeď na český čas.
 - Relativní období („minulý měsíc“, „letos“, „Q1“) převeď na konkrétní data podle dnešního dne a v odpovědi je uveď.
 
-## Který nástroj kdy
+## Oblasti
 
-| Otázka | Nástroj |
-|---|---|
-| Seznam majetku a jeho hodnoty | `fixed_assets_query` |
-| Aktuální hodnoty jedné karty | `fixed_asset_detail` |
-| Účetní odpisy po obdobích | `fixed_asset_accounting_depreciation` |
-| Daňové odpisy po letech | `fixed_asset_tax_depreciation` |
-| Z čeho se skládá pořizovací cena | `fixed_asset_cost_components` |
-| Vyřazení z evidence | `fixed_asset_disposals` a `fixed_asset_detail` |
+| Oblast | Skill | Hlavní nástroj | Na co se může uživatel ptát |
+|---|---|---|---|
+| Prodeje a tržby | `sales-analysis` | `report_sales_yoy` | vývoj tržeb, meziroční srovnání, obchodníci, největší zákazníci a produkty |
+| Pohledávky, závazky a platby | `receivables-payables` | `receivables_query` | vystavené a přijaté faktury, doklady po splatnosti, saldo partnera, platby na účtech |
+| Objednávky a zásilky | `orders-shipments` | `sales_orders_query` | objednávky zákazníků, expedice, zásilky a doručení, e-shopy a prodejny |
+| Sklady, produkty a nákup | `inventory-purchasing` | `sales_products_query` | zásoby a dostupnost, skladové doklady, ceny a marže, objednávky u dodavatelů |
+| Firmy a ceníky | `companies-pricing` | `companies_query` | údaje o zákaznících a dodavatelích, skupiny firem, ceníky, odeslané e-maily |
+| Účetnictví a výkazy | `accounting` | `report_pl_how` | výsledovka, hospodářský výsledek, náklady a výnosy, aktiva a pasiva |
+| Dlouhodobý majetek | `fixed-assets` | `fixed_assets_query` | evidence majetku, odpisy, zůstatková cena, vyřazení |
+| Smlouvy a fakturační podklady | `contracts` | `contracts_query` | smlouvy, sazby a kredit, SLA lhůty, co je připravené k vyfakturování |
+| Helpdesk | `helpdesk` | `helpdesk_tickets_query` | tikety, jejich stav a řešitelé, výkazy práce, zákaznický portál |
 
-Všechny nástroje pro jednu kartu berou číselné `id` z `fixed_assets_query`. `search` u `fixed_assets_query` nic nezúží, kartu podle názvu nebo inventárního čísla proto najdeš procházením stránek. Seznam je seřazený od naposledy založených.
+## Jak odpovědět
 
-## Pole majetku
-
-- Inventární číslo je `kod` + `cislo`, dále `nazev`, `skupina`, `podskupina`.
-- Stav `stav`: 0 Nový, 1 V používání, 2 Vyřazený. Datum uvedení do užívání `uvedeni`, vyřazení `vyrazeni`.
-- Účetní hodnoty mají příponu `_uc`, daňové `_da`: pořizovací cena `pc_*`, oprávky `opr_*`, zůstatková cena `zc_*`. Kolik zbývá odepsat, je zůstatková cena.
-- Odpisy: účetní metoda `odpmet_uc` a doba `doba_uc`, daňová odpisová skupina `m_skupina_da` a příznak rovnoměrného odpisu `rovnom_da`.
-- Příznaky `hmotny`, `investicni`, `odpisovany`. Umístění `lokalita`, `budova`, `mistnost`, útvar `utvar`.
-- `fixed_asset_detail` má navíc hodnoty po částečném vyřazení `akt_pc_uc`, `akt_opr_uc`, `akt_zc_uc` (a `_da`). Pro „kolik má majetek teď“ použij tyto. Když karta neexistuje, vrátí prázdnou odpověď.
-- Vždy uveď, jestli jde o účetní, nebo daňové hodnoty.
-
-## Odpisy a složky ceny
-
-- Účetní odpisy: řádek za období `obdobi` s částkou `castka` za to období. Typ `typ`: 0 Počáteční oprávky, 1 Běžný, 2 Přerušení odpisů, 3 Vyřazení, 4 Částečné vyřazení.
-- Daňové odpisy: řádek za rok `rok` s částkou `castka`, stejným `typ`, názvem metody `metoda` a daňovou uznatelností `uznatelnost`.
-- Složky pořizovací ceny: `nazev`, `castka` v měně `mena`, `castka_kc` v Kč, `typ` (0 účetní i daňová, 1 jen účetní, 2 jen daňová) a `zvyseni` (0 navýšení ceny, 1 technické zhodnocení).
-- `fixed_asset_disposals` je záznam vyřazování množství a přesunů (`datum`, `mnozstvi`, `duvod`, umístění). Částky neobsahuje. Hodnotu a způsob vyřazení najdeš v detailu karty (`vyrazeno_uc`, `vyrazeno_da`, `zpusob_vyr_nazev`, `prijem_vyr`).
-
-## Typické dotazy
-
-- **Celková hodnota majetku.** Projdi všechny stránky a sečti `pc_uc` a `zc_uc` karet ve stavu 1. Pro daňový pohled použij `_da`.
-- **Odpisy za rok.** Souhrn za celý majetek konektor nevrací. Pro jednotlivé karty sečti účetní odpisy s `obdobi` v daném roce. U velké evidence to uživateli nabídni jen pro vybrané karty.
+- Uveď jen oblasti, jejichž hlavní nástroj konektor nabízí. Firma může nástroje zúžit a ostatní oblasti uživatel nemá k dispozici.
+- U každé oblasti napiš jednou větou, co z ní zjistíš, a přidej jednu nebo dvě ukázkové otázky, které si uživatel může rovnou položit.
+- Názvy nástrojů ani skillů uživateli nevypisuj.
+- Na konkrétní dotaz z některé oblasti odpověz podle jejího skillu.
 
 ## Prezentace
 

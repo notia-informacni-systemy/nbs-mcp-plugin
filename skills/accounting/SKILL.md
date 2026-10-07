@@ -7,9 +7,11 @@ description: Účetnictví a výkazy z Notia Business Serveru (NBS). Použij, kd
 
 ## Společná pravidla
 
-- Konektor čte data z NBS jen pro čtení a s oprávněními přihlášeného uživatele. Když nástroj odpoví „K těmto datům nemáte v NBS oprávnění“, řekni to uživateli a nezkoušej data získat jiným nástrojem.
+- Konektor čte data z NBS jen pro čtení a s oprávněními přihlášeného uživatele.
 - Když konektor některý nástroj nenabízí, firma ho nemá zpřístupněný. Řekni to a data neodhaduj.
-- Seznamy (`*_query`) vrací `{ total, rows }`, ve výchozím stavu 50 řádků. Víc řádků najednou dostaneš přes `limit` (nejvýš 200), další stránku přes `offset`.
+- Seznamy (`*_query`) vrací `{ total, rows }`: `total` je počet všech záznamů, `rows` aktuální stránka, ve výchozím stavu 50 řádků. Víc řádků najednou dostaneš přes `limit` (nejvýš 200), další stránku přes `offset`.
+- Když čekáš hodně záznamů, nejdřív zjisti `total` (stačí `limit` 1). Do konverzace nenačítej víc než dvě stránky po 200 řádcích, víc se do ní nevejde. Když by odpověď potřebovala víc, zuž dotaz, nebo uživateli řekni, kolik záznamů z `total` jsi prošel.
+- Data chodí jako čas v UTC: `2026-03-31T22:00:00.000Z` je 1. 4. 2026 v Česku. Před porovnáním s obdobím je převeď na český čas.
 - Relativní období („minulý měsíc“, „letos“, „Q1“) převeď na konkrétní data podle dnešního dne a v odpovědi je uveď.
 
 ## Který nástroj kdy
@@ -24,11 +26,12 @@ description: Účetnictví a výkazy z Notia Business Serveru (NBS). Použij, kd
 
 ## Výsledovka (`report_pl_how`)
 
-- Pošli oba parametry: `limitDate` ve tvaru `YYYY-MM-DD` (rozhoduje jen rok a měsíc) a `interval` jako `"0"` pro samotný měsíc, nebo `"1"` pro období od ledna do daného měsíce.
+- Pošli oba parametry: `limitDate` ve tvaru `YYYY-MM-DD` (rozhoduje jen rok a měsíc) a `interval` 0 pro samotný měsíc, nebo 1 pro období od ledna do daného měsíce.
 - Vrací `{ data }` s 11 řádky v pevném pořadí: Čistý obrat, COGS, VLC+FLC, MACO, Gross Margin, BTL, Marketing ostatní, Marketing celkem, Sales OHD, HQ, EBIT.
-- Každý řádek má `actual` (skutečnost), `budget` (rozpočet) a `last_year` (stejné období loni). `yoy` a `act_bdg` jsou rozdíly. `yoy_proc` a `act_bdg_proc` jsou poměry, kde 100 znamená beze změny: růst je `yoy_proc` − 100.
+- Každý řádek má `actual` (skutečnost), `budget` (rozpočet) a `last_year` (stejné období loni). `yoy` a `act_bdg` jsou rozdíly. `yoy_proc` a `act_bdg_proc` jsou indexy zaokrouhlené na dvě desetinná místa, kde 100 znamená beze změny: růst proti loňsku je `yoy_proc` − 100, plnění rozpočtu je `act_bdg_proc` %. Když je loňská hodnota nebo rozpočet 0, vrací 0, což neznamená pokles o 100 %. Ostatní přehledy vrací změny v jiném tvaru, srovnání je v skillu `sales-analysis`.
 - Řádek Gross Margin je v procentech (MACO / Čistý obrat), ne v penězích.
 - Výsledovka se nastavuje pro každou firmu zvlášť. Když nástroj vrátí chybu nebo samé nuly, řekni, že firma tento výkaz v NBS nemá, a použij `balance_sheet_totals`.
+- Plnění rozpočtu uváděj jako procento rozpočtu.
 
 ## Náklady, výnosy, aktiva a pasiva (`balance_sheet_totals`)
 
@@ -57,13 +60,24 @@ description: Účetnictví a výkazy z Notia Business Serveru (NBS). Použij, kd
 
 ## Prezentace
 
-- Začni dvěma až třemi větami s hlavním zjištěním, potom ukaž tabulku.
-- Částky piš česky: mezera jako oddělovač tisíců, desetinná čárka, měna za číslem. Procenta zaokrouhli na jedno desetinné místo.
-- Surový JSON do odpovědi nevkládej. Uveď použité období a výkaz, aby si uživatel mohl výsledek ověřit v NBS.
+- Začni dvěma až třemi větami s hlavním zjištěním, potom ukaž tabulku. Delší seznamy zkrať na nejvýznamnějších zhruba 15 řádků a zbytek sečti jako „ostatní“.
+- Částky piš česky: mezera jako oddělovač tisíců, desetinná čárka, měna za číslem. Data piš jako 1. 4. 2026.
+- Procenta zaokrouhli na jedno desetinné místo, pokud uživatel nechce jinou přesnost. Přesnost nikdy nezvyšuj nad to, co zdroj vrací, a když uživatel chce víc, řekni mu to. Změny mezi obdobími piš jako růst v procentech se znaménkem, například +12,0 % nebo −3,5 %.
+- Částky v různých měnách nesčítej. Pro souhrn použij pole v Kč, pokud ho zdroj má, a řekni to.
+- Když jsi prošel jen část seznamu, řekni, kolik záznamů z `total` výsledek zahrnuje.
+- Uveď zdroj a období, aby si uživatel mohl výsledek ověřit v NBS.
+- Surový JSON do odpovědi nevkládej.
 
 ## Chyby
 
 - „Platnost přihlášení do NBS vypršela“: požádej uživatele, ať konektor Notia Business Server znovu připojí v nastavení konektorů.
-- „Systém NBS je momentálně nedostupný“ nebo „NBS je momentálně přetížený“: řekni to uživateli a nabídni zopakování později. Data neodhaduj.
-- „NBS odmítl parametry dotazu“: zkontroluj formát `limitDate`, `interval` a `YYYYMM` podle této příručky.
-- Chybové odpovědi obsahují „ID požadavku“. Při hlášení problému ho uživatel předá podpoře Notia.
+- „Správce vaší firmy integraci NBS s Claude vypnul“ nebo „Nemáte v NBS oprávnění používat Claude“: řekni uživateli, že integraci musí zapnout nebo oprávnění přidělit správce NBS v jeho firmě a potom je potřeba konektor znovu připojit. Další nástroje nezkoušej.
+- „K těmto datům nemáte v NBS oprávnění“: řekni to uživateli a nezkoušej data získat jiným nástrojem.
+- „Neplatné argumenty“ nebo „NBS odmítl parametry dotazu“: oprav parametry podle schématu nástroje a této příručky (formát data, typ hodnoty, číselné `id` místo kódu) a zkus to jednou znovu. Když to znovu selže, řekni uživateli, co se nepodařilo.
+- „Požadovaná data v NBS neexistují“: ověř, že `id` pochází ze správného seznamu. Když ano, řekni, že záznam v NBS není.
+- „Výsledek je příliš velký“: sniž `limit` na polovinu, případně zuž období.
+- „NBS neodpověděl v časovém limitu“: zuž dotaz (menší `limit`, kratší období) a zkus to jednou znovu.
+- „NBS API vrátilo chybu“: stejný dotaz neopakuj. Když pro otázku existuje jiný zdroj z tabulky „Který nástroj kdy“, zkus ho, jinak řekni uživateli, co se nepodařilo.
+- „Systém NBS je momentálně nedostupný“, „NBS je momentálně přetížený“ nebo „Komunikace s NBS selhala“: řekni to uživateli a nabídni zopakování později.
+- „Neznámý nástroj“ nebo „Tento nástroj NBS Hub nezná“: firma nástroj nemá zpřístupněný, postupuj jako u chybějícího nástroje.
+- Po žádné chybě data neodhaduj. Chybové odpovědi obsahují „ID požadavku“, při hlášení problému ho uživatel předá podpoře Notia.

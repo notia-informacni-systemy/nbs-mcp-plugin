@@ -12,6 +12,7 @@ Plugin obsahuje skills, které Claude vedou při výběru nástrojů, dohledán�
 
 | Skill | Oblast |
 |---|---|
+| `nbs-overview` | přehled, s čím plugin pomůže a na co se můžete ptát |
 | `sales-analysis` | tržby, meziroční srovnání, prodeje podle obchodníků, zákazníků a produktů |
 | `receivables-payables` | pohledávky, závazky, doklady po splatnosti, saldo partnera, bankovní platby |
 | `orders-shipments` | prodejní objednávky, zásilky, e-shopy a prodejny |

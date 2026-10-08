@@ -1,0 +1,12 @@
+{
+  "name": "nbs-mcp-plugin",
+  "private": true,
+  "description": "Vývojové skripty pluginu Notia Business Server (verze pluginu je v .claude-plugin/plugin.json)",
+  "scripts": {
+    "sync": "node scripts/sync-shared.mjs",
+    "validate": "node scripts/validate.mjs",
+    "release:patch": "node scripts/release.mjs patch",
+    "release:minor": "node scripts/release.mjs minor",
+    "release:major": "node scripts/release.mjs major"
+  }
+}

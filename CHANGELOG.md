@@ -4,6 +4,8 @@ Podstatné změny pluginu Notia Business Server. Nové změny se zapisují do se
 
 ## [Nevydáno]
 
+## [1.0.1] – 2026-10-08
+
 ### Přidáno
 - `.gitignore` pro soubory macOS a editorů a pro zipy pluginu.
 - `package.json` se skripty `npm run sync`, `npm run validate` a `npm run release:patch|minor|major`.

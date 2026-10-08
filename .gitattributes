@@ -1,5 +1,6 @@
 # Do zipu pro claude.ai (git archive) patří jen samotný plugin, ne zdroje a skripty.
 .gitattributes export-ignore
+.gitignore export-ignore
 .github export-ignore
 CONTRIBUTING.md export-ignore
 scripts export-ignore

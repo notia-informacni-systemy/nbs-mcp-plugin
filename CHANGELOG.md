@@ -4,6 +4,12 @@ Podstatné změny pluginu Notia Business Server. Nové změny se zapisují do se
 
 ## [Nevydáno]
 
+### Přidáno
+- `.gitignore` pro soubory macOS a editorů a pro zipy pluginu.
+
+### Změněno
+- README: kontakt na podporu helpdesk@notia.com a odkaz na zásady ochrany osobních údajů.
+
 ## [1.0.0] – 2026-10-08
 
 První stabilní verze pro adresář pluginů Claude. Obsahově shodná s 0.2.0.

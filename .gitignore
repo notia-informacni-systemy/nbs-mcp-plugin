@@ -1,0 +1,7 @@
+# macOS a editory
+.DS_Store
+.vscode/
+.idea/
+
+# Zip pro claude.ai se vytváří z tagu (git archive, viz CONTRIBUTING.md), necommituje se
+*.zip

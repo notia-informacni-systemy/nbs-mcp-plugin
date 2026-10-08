@@ -32,11 +32,16 @@ Plugin obsahuje skills, které Claude vedou při výběru nástrojů, dohledán�
 - Doménu firmy Notia Business Server použije jen k vyhledání adresy vašeho NBS Hubu v adresáři Notia.
 - Samotný plugin neobsahuje žádné přihlašovací údaje ani klíče a sám nic neukládá.
 - Přístup můžete kdykoli zrušit odpojením konektoru v Claude.
+- Jak Notia zpracovává osobní údaje, popisují [zásady ochrany osobních údajů](https://notia.com/ochrana-soukromi/).
 
 ## English
 
 Connects Claude to Notia Business Server (NBS), an ERP used by Czech companies. Ask about revenue and sales, receivables and payables, orders and shipments, inventory, financial statements, fixed assets, contracts or helpdesk tickets and Claude answers from your live NBS data. Access is read-only and always limited to the permissions of your own NBS account. You sign in on your company's own NBS Hub login page; your password is never sent to Notia Business Server or Claude. Queries (tool name, date range and filters) are sent through `mcp.notia.cz` to your company's NBS Hub, and the results are returned to your Claude conversation. The plugin contains no credentials and stores nothing itself.
 
+Support: [helpdesk@notia.com](mailto:helpdesk@notia.com). Privacy policy: <https://notia.com/ochrana-soukromi/>.
+
 ## Podpora
 
-Notia — <https://notia.cz>
+- Podpora: [helpdesk@notia.com](mailto:helpdesk@notia.com)
+- Zásady ochrany osobních údajů: <https://notia.com/ochrana-soukromi/>
+- Web: <https://notia.cz>

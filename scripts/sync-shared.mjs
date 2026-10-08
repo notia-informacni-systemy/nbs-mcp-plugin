@@ -7,7 +7,7 @@
  * Společné sekce se upravují jen v shared/, ruční úpravu ve skillu skript přepíše.
  * Skript je idempotentní, pustit se dá kdykoli a odkudkoli:
  *
- *   node scripts/sync-shared.mjs
+ *   npm run sync   (nebo node scripts/sync-shared.mjs)
  */
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';

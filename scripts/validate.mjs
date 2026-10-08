@@ -5,7 +5,7 @@
  * rozcestník), README (seznam skills), CHANGELOG (záznam pro aktuální verzi), licence.
  * Pouští ji CI (.github/workflows/validate.yml) a dá se pustit odkudkoli:
  *
- *   node scripts/validate.mjs
+ *   npm run validate   (nebo node scripts/validate.mjs)
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -104,7 +104,7 @@ for (const dir of skills) {
   for (const { file: source, heading, body } of shared) {
     if (!parts[heading]) fail(`skills/${dir}: chybí sekce „${heading}“ ze shared/${source}`);
     else if (parts[heading] !== body) {
-      fail(`skills/${dir}: sekce „${heading}“ neodpovídá shared/${source} (spusťte node scripts/sync-shared.mjs)`);
+      fail(`skills/${dir}: sekce „${heading}“ neodpovídá shared/${source} (spusťte npm run sync)`);
     }
   }
   const frontmatter = /^---\n([\s\S]*?)\n---\n/.exec(content)?.[1] ?? '';

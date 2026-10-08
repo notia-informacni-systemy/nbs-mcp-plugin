@@ -1,11 +1,12 @@
 # Changelog
 
-Podstatné změny pluginu Notia Business Server. Nové změny se zapisují do sekce „Nevydáno“, při vydání ji `node scripts/release.mjs` přejmenuje na novou verzi (postup v CONTRIBUTING.md). Verze odpovídá `version` v `.claude-plugin/plugin.json`. U každé verze je uvedeno, jaký bridge NBS potřebuje.
+Podstatné změny pluginu Notia Business Server. Nové změny se zapisují do sekce „Nevydáno“, při vydání ji `npm run release:patch|minor|major` přejmenuje na novou verzi (postup v CONTRIBUTING.md). Verze odpovídá `version` v `.claude-plugin/plugin.json`. U každé verze je uvedeno, jaký bridge NBS potřebuje.
 
 ## [Nevydáno]
 
 ### Přidáno
 - `.gitignore` pro soubory macOS a editorů a pro zipy pluginu.
+- `package.json` se skripty `npm run sync`, `npm run validate` a `npm run release:patch|minor|major`.
 
 ### Změněno
 - README: kontakt na podporu helpdesk@notia.com a odkaz na zásady ochrany osobních údajů.

@@ -12,20 +12,23 @@ Návod pro úpravy skills, kontroly a vydání nové verze. Co plugin dělá pro
 | `shared/*.md` | společné sekce všech skills (Společná pravidla, Prezentace, Chyby) |
 | `scripts/` | generátor společných sekcí, validace a vydání verze |
 | `CHANGELOG.md` | změny po verzích, včetně požadované verze bridge |
+| `package.json` | jen `npm run` skripty (`sync`, `validate`, `release:*`), bez závislostí a bez verze |
 
-`shared/`, `scripts/`, `.github/` a tento soubor se do zipu pro claude.ai nedostanou (`.gitattributes`).
+Skripty nemají závislosti, `npm install` není potřeba. Fungují i přes `pnpm run`.
+
+`shared/`, `scripts/`, `.github/`, `package.json` a tento soubor se do zipu pro claude.ai nedostanou (`.gitattributes`).
 
 ## Úpravy skills
 
 - Názvy nástrojů a jejich parametry musí odpovídat katalogu bridge v monorepu `notia` (`apps/nbs-mcp-bridge/api/src/tools/mappings/`). Když bridge nástroj přidá, přejmenuje nebo změní parametry, upravte i skill.
-- Společné sekce se ve skills needitují. Upravte soubor v `shared/` a spusťte `node scripts/sync-shared.mjs`, který je zapíše do všech skills. Ruční úpravu společné sekce ve skillu generátor přepíše.
+- Společné sekce se ve skills needitují. Upravte soubor v `shared/` a spusťte `npm run sync`, který je zapíše do všech skills. Ruční úpravu společné sekce ve skillu generátor přepíše.
 - Nový skill přidejte i do tabulky „Oblasti“ v `skills/nbs-overview/SKILL.md` a do tabulky skills v README.
 - Každou změnu zapište do sekce `## [Nevydáno]` v `CHANGELOG.md`. Když skill nově používá parametr, který starší bridge nemá, uveďte to tam.
 
 ## Kontroly
 
 ```bash
-node scripts/validate.mjs           # totéž pouští CI u každého pushe a pull requestu
+npm run validate                    # totéž pouští CI u každého pushe a pull requestu
 claude plugin validate .
 claude --plugin-dir .               # test v Claude Code
 ```
@@ -38,7 +41,7 @@ Validace kontroluje manifest, `.mcp.json`, frontmatter skills, shodu společnýc
 2. Vydává se z aktuálního `main` s čistým pracovním stromem:
    ```bash
    git checkout main && git pull
-   node scripts/release.mjs patch      # nebo minor / major
+   npm run release:patch               # nebo release:minor / release:major
    ```
    Skript pustí validaci, zvedne `version` v `plugin.json`, přejmenuje „Nevydáno“ na novou verzi s dnešním datem, vytvoří commit `release: vX.Y.Z` a anotovaný tag. Nic nepushuje.
 3. Commit i tag pushněte jedním příkazem, obyčejný `git push` tagy neposílá:

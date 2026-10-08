@@ -9,7 +9,7 @@
  * - sekci „## [Nevydáno]“ v CHANGELOG.md přejmenuje na novou verzi s dnešním datem a nad ni
  *   založí prázdnou. Prázdnou sekci odmítne, každá verze musí mít popsané změny.
  *
- *   node scripts/release.mjs patch|minor|major
+ *   npm run release:patch|release:minor|release:major   (nebo node scripts/release.mjs patch|minor|major)
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -36,7 +36,7 @@ const validate = () => {
 };
 
 const bump = process.argv[2];
-if (!['patch', 'minor', 'major'].includes(bump)) die('použití: node scripts/release.mjs patch|minor|major');
+if (!['patch', 'minor', 'major'].includes(bump)) die('použití: npm run release:patch|release:minor|release:major');
 
 // Vydává se z main — tag na commitu jiné větve by označil obsah, který v main není.
 const branch = git('rev-parse', '--abbrev-ref', 'HEAD');

@@ -1,6 +1,14 @@
 # Changelog
 
-Podstatné změny pluginu Notia Business Server. Verze odpovídá `version` v `.claude-plugin/plugin.json`, validace (`node scripts/validate.mjs`) odmítne plugin, jehož verze tu nemá záznam. U každé verze je uvedeno, jaký bridge NBS potřebuje.
+Podstatné změny pluginu Notia Business Server. Nové změny se zapisují do sekce „Nevydáno“, při vydání ji `node scripts/release.mjs` přejmenuje na novou verzi (postup v CONTRIBUTING.md). Verze odpovídá `version` v `.claude-plugin/plugin.json`. U každé verze je uvedeno, jaký bridge NBS potřebuje.
+
+## [Nevydáno]
+
+## [1.0.0] – 2026-10-08
+
+První stabilní verze pro adresář pluginů Claude. Obsahově shodná s 0.2.0.
+
+**Bridge:** stejný požadavek jako 0.2.0.
 
 ## [0.2.0] – 2026-10-07
 

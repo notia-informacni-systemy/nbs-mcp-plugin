@@ -44,4 +44,4 @@ Support: [helpdesk@notia.com](mailto:helpdesk@notia.com). Privacy policy: <https
 
 - Podpora: [helpdesk@notia.com](mailto:helpdesk@notia.com)
 - Zásady ochrany osobních údajů: <https://notia.com/ochrana-soukromi/>
-- Web: <https://notia.cz>
+- Web: <https://notia.com>

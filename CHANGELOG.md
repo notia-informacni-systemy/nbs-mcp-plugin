@@ -4,6 +4,9 @@ Podstatné změny pluginu Notia Business Server. Nové změny se zapisují do se
 
 ## [Nevydáno]
 
+### Změněno
+- Web v manifestu a README: <https://notia.com>.
+
 ## [1.0.1] – 2026-10-08
 
 ### Přidáno

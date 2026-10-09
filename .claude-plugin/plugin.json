@@ -4,10 +4,10 @@
   "version": "1.0.1",
   "description": "Ptejte se na tržby, pohledávky a závazky, objednávky, sklady, účetní výkazy, majetek, smlouvy a helpdesk z vašeho Notia Business Serveru (NBS) přímo v konverzaci s Claude. Data se čtou jen pro čtení a vždy s vašimi oprávněními v NBS.",
   "author": {
-    "name": "Notia",
-    "url": "https://notia.cz"
+    "name": "NOTIA",
+    "url": "https://notia.com"
   },
-  "homepage": "https://notia.cz",
+  "homepage": "https://notia.com",
   "license": "Apache-2.0",
   "keywords": [
     "nbs",
